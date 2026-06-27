@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pediatric Population Health in Action — MGH / Harvard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── COLOR SYSTEM — Navy, Amber & Coral ── */
+    :root {
+      --ink:        #151c2e;
+      --slate:      #2a3550;
+      --navy:       #1e3a6e;       /* primary accent — deep navy */
+      --navy-lt:    #4a7cc9;       /* light blue */
+      --navy-bg:    #eaf0fa;       /* navy tint background */
+      --navy-mid:   #b8ccec;       /* navy border */
+      --amber:      #c47c3e;       /* secondary accent — warm amber */
+      --amber-bg:   #fdf4ec;
+      --coral:      #c0493a;       /* tertiary — vital coral-red */
+      --coral-bg:   #faecea;
+      --sand:       #f5f0e6;
+      --warm:       #ece7dc;
+      --white:      #ffffff;
+      --muted:      #6b7280;
+      --card-bg:    #faf8f5;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      background: var(--sand);
+      color: var(--ink);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      color: var(--white);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 75% at 85% 40%, rgba(30,58,110,.35) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 55% at 10% 85%, rgba(196,124,62,.15) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-text {
+      padding: 10vh 6vw 10vh 8vw;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .eyebrow {
+      font-size: .72rem; font-weight: 500; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--navy-lt); margin-bottom: 1.4rem;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 5vw, 4.8rem);
+      font-weight: 300; line-height: 1.07; margin-bottom: .8rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--navy-lt); }
+    .hero-sub {
+      font-size: .85rem; letter-spacing: .07em;
+      color: rgba(255,255,255,.45); margin-bottom: 2.4rem;
+    }
+    .hero-mission {
+      font-size: 1.05rem; color: rgba(255,255,255,.82);
+      max-width: 46ch; line-height: 1.78; margin-bottom: 2.8rem;
+      border-left: 3px solid var(--navy-lt); padding-left: 1.2rem;
+      font-style: italic;
+    }
+    .hero-meta { display: flex; flex-direction: column; gap: .5rem; }
+    .meta-row { display: flex; align-items: flex-start; gap: .8rem; font-size: .82rem; color: rgba(255,255,255,.58); }
+    .meta-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--navy-lt); flex-shrink: 0; margin-top: .52rem; }
+
+    /* Hero right — aims visual */
+    .hero-right {
+      position: relative; display: flex; align-items: center; justify-content: center; padding: 6vh 4vw;
+    }
+    .aims-box {
+      position: relative; z-index: 1;
+      width: min(360px, 90%);
+    }
+    .aims-label {
+      font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--navy-lt); margin-bottom: 1.2rem;
+    }
+    .aim-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 0; border-bottom: 1px solid rgba(74,124,201,.18);
+    }
+    .aim-item:last-child { border-bottom: none; }
+    .aim-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.1rem;
+      font-weight: 300; color: rgba(74,124,201,.45); line-height: 1; flex-shrink: 0; width: 1.8rem;
+    }
+    .aim-text { font-size: 1rem; color: rgba(255,255,255,.82); line-height: 1.65; }
+
+    /* ── STICKY NAV ── */
+    .section-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(21,28,46,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(30,58,110,.25);
+      padding: .85rem 8vw;
+      display: flex; gap: 2rem; overflow-x: auto;
+    }
+    .section-nav a {
+      font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.48); text-decoration: none; white-space: nowrap;
+      transition: color .25s;
+    }
+    .section-nav a:hover { color: var(--navy-lt); }
+
+    /* ── SHARED SECTION ── */
+    section { padding: 6.5rem 8vw; }
+    section:nth-of-type(even) { background: var(--warm); }
+
+    .section-label {
+      font-size: .7rem; font-weight: 500; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--navy); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300; line-height: 1.15; color: var(--ink); margin-bottom: 2.8rem;
+    }
+    .section-title em { font-style: italic; color: var(--navy); }
+
+    /* ── OVERVIEW ── */
+    .overview-body p { font-size: 1.05rem; color: var(--slate); margin-bottom: 1.4rem; max-width: 72ch; }
+
+    /* Aims list in overview */
+    .aims-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .aim-row {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      background: var(--white); border: 1px solid rgba(30,58,110,.1);
+      padding: 1.1rem 1.4rem; border-radius: 2px;
+    }
+    .aim-row-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem;
+      font-weight: 300; color: var(--navy); line-height: 1; flex-shrink: 0; min-width: 1.5rem;
+    }
+    .aim-row-text { font-size: .92rem; color: var(--slate); line-height: 1.65; }
+
+    /* ── TEAM ── */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+    .team-card {
+      background: var(--white); border: 1px solid rgba(30,58,110,.12);
+      border-radius: 2px; overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .team-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(21,28,46,.09); }
+    .team-card-top {
+      background: var(--ink); padding: 1.8rem;
+      position: relative; overflow: hidden;
+    }
+    .team-card-top::after {
+      content: ''; position: absolute; bottom: -20px; right: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(30,58,110,.25);
+    }
+    .team-card-top.rose::after { background: rgba(196,124,62,.25); }
+    .team-card-top.sage::after { background: rgba(192,73,58,.25); }
+    .team-initial {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;
+      font-weight: 300; color: var(--navy-lt); line-height: 1; margin-bottom: .5rem;
+    }
+    .team-card-top.rose .team-initial { color: #d4943e; }
+    .team-card-top.sage .team-initial { color: #d47060; }
+    .team-name { font-size: 1rem; font-weight: 500; color: var(--white); margin-bottom: .2rem; }
+    .team-cred { font-size: .78rem; color: rgba(255,255,255,.5); letter-spacing: .03em; }
+    .team-card-body { padding: 1.6rem; }
+    .team-role {
+      font-size: .7rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--navy); margin-bottom: .75rem;
+    }
+    .team-card-body.rose .team-role { color: var(--amber); }
+    .team-card-body.sage .team-role { color: var(--coral); }
+    .team-bio { font-size: .88rem; color: var(--slate); line-height: 1.7; }
+    .team-tags { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag {
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      padding: .22rem .6rem; border-radius: 1px;
+    }
+    .tag-plum { background: rgba(30,58,110,.09); color: var(--navy); }
+    .tag-rose  { background: rgba(196,124,62,.09); color: var(--amber); }
+    .tag-sage  { background: rgba(192,73,58,.09); color: var(--coral); }
+
+    /* ── PROGRAMS ── */
+    .programs-stack { display: flex; flex-direction: column; gap: 3rem; }
+    .program-block {
+      background: var(--white); border: 1px solid rgba(30,58,110,.12);
+      border-radius: 2px; overflow: hidden;
+    }
+    .program-header {
+      background: var(--ink); padding: 1.8rem 2rem;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .program-header.rose-h { background: linear-gradient(135deg, #111d38, #1c1f2e); }
+    .program-header.sage-h { background: linear-gradient(135deg, #1e0d0b, #1c1f2e); }
+    .program-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.7rem;
+      font-weight: 400; color: var(--white); line-height: 1.2;
+    }
+    .program-badge {
+      font-size: .65rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+      padding: .3rem .8rem; border-radius: 1px; white-space: nowrap; align-self: flex-start;
+    }
+    .badge-plum { background: rgba(74,124,201,.2); color: var(--navy-lt); border: 1px solid rgba(74,124,201,.3); }
+    .badge-rose  { background: rgba(196,124,62,.2);  color: #d4943e; border: 1px solid rgba(196,124,62,.3); }
+    .badge-sage  { background: rgba(192,73,58,.2);  color: #d47060; border: 1px solid rgba(192,73,58,.3); }
+    .program-body { padding: 2rem; }
+    .program-desc { font-size: 1rem; color: var(--slate); line-height: 1.75; margin-bottom: 1.6rem; max-width: 72ch; }
+    .program-features { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .feature-item {
+      border-left: 3px solid var(--navy); padding-left: 1rem;
+    }
+    .feature-item.rose-f { border-color: var(--amber); }
+    .feature-item.sage-f { border-color: var(--coral); }
+    .feature-title { font-size: .82rem; font-weight: 500; color: var(--ink); margin-bottom: .25rem; }
+    .feature-desc  { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+
+    /* Group therapy list */
+    .group-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1rem; margin-top: 1.2rem; }
+    .group-card {
+      background: var(--card-bg); border: 1px solid rgba(30,58,110,.1);
+      padding: 1.1rem 1.2rem; border-radius: 2px;
+    }
+    .group-card-name { font-size: .88rem; font-weight: 500; color: var(--navy); margin-bottom: .3rem; }
+    .group-card.rose-g .group-card-name { color: var(--amber); }
+    .group-card.sage-g .group-card-name { color: var(--coral); }
+    .group-card-ages { font-size: .72rem; letter-spacing: .06em; color: var(--muted); margin-bottom: .4rem; }
+    .group-card-desc { font-size: .8rem; color: var(--slate); line-height: 1.6; }
+
+    /* DBT-E highlights */
+    .dbt-highlights {
+      margin-top: 1.6rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;
+    }
+    .dbt-hi {
+      background: var(--navy-bg); border: 1px solid var(--navy-mid);
+      padding: 1.1rem 1.2rem; border-radius: 2px;
+    }
+    .dbt-hi-stat { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--navy); line-height: 1; margin-bottom: .3rem; }
+    .dbt-hi-label { font-size: .8rem; color: var(--slate); line-height: 1.5; }
+
+    /* ── PUBLICATION ── */
+    .pub-item {
+      border-top: 1px solid rgba(30,58,110,.12); padding: 1.4rem 0;
+      display: grid; grid-template-columns: auto 1fr; gap: 1.4rem;
+    }
+    .pub-item:last-child { border-bottom: 1px solid rgba(30,58,110,.12); }
+    .pub-year { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--navy); min-width: 3rem; padding-top: .1rem; }
+    .pub-title { font-size: .92rem; color: var(--ink); margin-bottom: .3rem; line-height: 1.5; }
+    .pub-journal { font-size: .76rem; color: var(--muted); font-style: italic; }
+
+    /* ── CONTACT / CTA ── */
+    .cta-bar {
+      background: var(--navy); color: var(--white);
+      padding: 2.5rem 8vw; display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .cta-bar p { font-size: 1rem; color: rgba(255,255,255,.85); max-width: 60ch; }
+    .cta-btn {
+      display: inline-block; padding: .75rem 2rem;
+      background: var(--white); color: var(--navy);
+      font-size: .8rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+      text-decoration: none; border-radius: 1px; white-space: nowrap; transition: background .2s;
+    }
+    .cta-btn:hover { background: var(--navy-bg); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,.4);
+      padding: 3.5rem 8vw; display: flex;
+      justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .foot-prog {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;
+      font-weight: 300; color: rgba(255,255,255,.75); margin-bottom: .4rem;
+    }
+    .foot-inst { font-size: .75rem; color: rgba(255,255,255,.35); line-height: 1.7; }
+    .foot-right { font-size: .72rem; text-align: right; max-width: 36ch; line-height: 1.7; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { display: none; }
+      .cta-bar { flex-direction: column; }
+      footer { flex-direction: column; }
+      .foot-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Massachusetts General Hospital · MassGeneral Brigham Academic Medical Centers · Harvard Medical School</p>
+    <h1>Pediatric Population<br>Health in <em>Action</em></h1>
+    <p class="hero-sub">Division of Child &amp; Adolescent Psychiatry · Massachusetts General Hospital</p>
+    <p class="hero-mission">
+      We use intergenerational and life-course approaches to examine how adversity 
+      and trauma shape children's developmental, mental, and physical health — 
+      and translate that science into multilevel interventions for children, families, 
+      and the communities and systems that surround them.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="meta-dot"></span>Yawkey 6A, 55 Fruit St, Boston, MA 02114</div>
+      <div class="meta-row"><span class="meta-dot"></span>617-724-4292</div>
+      <div class="meta-row"><span class="meta-dot"></span>pediatricpopulationhealth@mgb.org</div>
+      <div class="meta-row"><span class="meta-dot"></span>Director: Archana Basu, PhD</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="aims-box">
+      <p class="aims-label">Program Primary Aims</p>
+      <div class="aim-item">
+        <span class="aim-num">1</span>
+        <span class="aim-text">Understand the impact of adversities and trauma on children's emotional, mental, and physical health.</span>
+      </div>
+      <div class="aim-item">
+        <span class="aim-num">2</span>
+        <span class="aim-text">Understand biobehavioral mechanisms — including epigenetic mechanisms and parenting — underlying adversity-associated health outcomes.</span>
+      </div>
+      <div class="aim-item">
+        <span class="aim-num">3</span>
+        <span class="aim-text">Examine sensitive periods of development: 0–3 years and pre-puberty as critical windows of intervention opportunities to recalibrate the effects of early childhood adversities.</span>
+      </div>
+      <div class="aim-item">
+        <span class="aim-num">4</span>
+        <span class="aim-text">Develop and implement multilevel interventions that bolster a child's relational health ecosystem, especially the parent-child relationship.</span>
+      </div>
+      <div class="aim-item">
+        <span class="aim-num">5</span>
+        <span class="aim-text">Implement collaborative, community-engaged research and clinical care approaches that engage key stakeholders throughout the project life cycle.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ NAV ══ -->
+<nav class="section-nav">
+  <a href="#about">About</a>
+  <a href="#team">Our Team</a>
+  <a href="#programs">Clinical Programs</a>
+  <a href="#programs">IPC</a>
+  <a href="#dbt-e">DBT-E</a>
+  <a href="#pyc">Parenting Young Children</a>
+  <a href="#publication">Key Publications</a>
+</nav>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <p class="section-label">About the Program</p>
+  <h2 class="section-title">Science that <em>moves</em> across levels</h2>
+  <div class="overview-body">
+    <p>
+      The Pediatric Population Health in Action program sits within the Division of Child 
+      and Adolescent Psychiatry at Massachusetts General Hospital and spans research, 
+      clinical care, and training across Harvard Medical School. Our work spans the science of early-life adversity from 
+      the molecular level — examining epigenetic mechanisms and biological stress pathways — 
+      to the population level, tracking health outcomes across large birth cohorts and 
+      designing systems-level interventions. Our program partners closely with the <a href="https://www.broadtraumainitiative.org/" target="_blank" style="color: var(--navy); text-decoration: none; border-bottom: 1px solid rgba(30,58,110,.3);">Broad Trauma Initiative</a>.
+    </p>
+    <p>
+      Childhood adversity and trauma are highly prevalent in the U.S. general population. 
+      Such experiences are associated with a broad range of developmental, mental, and 
+      physical health challenges — though they are not deterministic. Prevention and 
+      multilevel interventions, informed by the science of biobehavioral pathways, are 
+      central to improving population health. Our program pursues four interconnected aims:
+    </p>
+    <div class="aims-list">
+      <div class="aim-row">
+        <span class="aim-row-num">1</span>
+        <span class="aim-row-text">Understand the impact of adversities and trauma on children's <strong>emotional, mental, and physical health.</strong></span>
+      </div>
+      <div class="aim-row">
+        <span class="aim-row-num">2</span>
+        <span class="aim-row-text">Understand <strong>biobehavioral mechanisms</strong> — including epigenetic pathways and the quality of parenting — underlying childhood adversity-associated health outcomes.</span>
+      </div>
+      <div class="aim-row">
+        <span class="aim-row-num">3</span>
+        <span class="aim-row-text">Examine <strong>sensitive periods of development:</strong> 0–3 years and pre-puberty as critical windows of intervention opportunities to recalibrate the effects of early childhood adversities.</span>
+      </div>
+      <div class="aim-row">
+        <span class="aim-row-num">4</span>
+        <span class="aim-row-text">Develop and implement <strong>multilevel interventions</strong> at the individual, family, community, and systems level that bolster a child's relational health ecosystem.</span>
+      </div>
+      <div class="aim-row">
+        <span class="aim-row-num">5</span>
+        <span class="aim-row-text">Implement <strong>community-engaged research and clinical care</strong> that engages key stakeholders throughout design, implementation, dissemination, and program scaling.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TEAM ══ -->
+<section id="team">
+  <p class="section-label">Program Faculty &amp; Staff</p>
+  <h2 class="section-title">Our <em>Team</em></h2>
+  <div class="team-grid">
+
+    <!-- Archana Basu -->
+    <div class="team-card">
+      <div class="team-card-top">
+        <div class="team-initial">AB</div>
+        <div class="team-name"><a href="https://archanabasu.github.io/profile/" target="_blank" style="color: var(--white); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.35);">Archana Basu, PhD</a></div>
+        <div class="team-cred">Assistant Professor, Harvard Medical School · Staff Psychologist, MGH</div>
+      </div>
+      <div class="team-card-body">
+        <div class="team-role">Director, Pediatric Population Health in Action Program · Founding Co-Director, <a href="#programs" style="color: var(--navy); text-decoration: none; border-bottom: 1px solid rgba(30,58,110,.3);">Integrated Primary Care (IPC) Program</a></div>
+        <p class="team-bio">
+          Dr. Basu directs the program's research and clinical portfolio, using intergenerational
+          and life-course approaches to examine biobehavioral mechanisms linking trauma exposure
+          to children's mental, physical, and relational health outcomes, and the role of
+          protective factors such as caregiving sensitivity. She collaborates on developing,
+          evaluating, and implementing trauma-informed parenting and family-centered
+          psychotherapies, including
+          <a href="#dbt-e" style="color: var(--navy); text-decoration: none; border-bottom: 1px solid rgba(30,58,110,.3);">Dialectical Behavior Therapy-Elementary (DBT-E)</a>
+          and the <a href="#pyc" style="color: var(--navy); text-decoration: none; border-bottom: 1px solid rgba(30,58,110,.3);">Parenting Young Children groups</a>.
+          She co-directs the <a href="#programs" style="color: var(--navy); text-decoration: none; border-bottom: 1px solid rgba(30,58,110,.3);">IPC program</a>,
+          a population mental health implementation model in primary care.
+          As a licensed clinical psychologist, she works with children and families coping with
+          trauma, bereavement, and adversities.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-plum">Intergenerational Trauma</span>
+          <span class="tag tag-plum">Epigenetics</span>
+          <span class="tag tag-plum">DBT-E</span>
+          <span class="tag tag-plum">IPC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Christina Dolce -->
+    <div class="team-card">
+      <div class="team-card-top rose">
+        <div class="team-initial">CD</div>
+        <div class="team-name">Christina Dolce, PsyD</div>
+        <div class="team-cred">Clinical Supervisor, MGH</div>
+      </div>
+      <div class="team-card-body rose">
+        <div class="team-role">DBT-E Co-Developer &amp; Clinical Supervisor</div>
+        <p class="team-bio">
+          Dr. Dolce is a clinical psychologist with extensive expertise in Dialectical Behavior
+          Therapy and working with children, adolescents, young adults, and families. She
+          provides clinical supervision for DBT to multiple teams at MassGeneral Hospital and
+          is a co-developer and supervisor for the DBT-E protocol as part of the Broad Trauma
+          Initiative / MGH projects. She has previously served as a staff psychologist at
+          McLean Hospital / Harvard Medical School and Brown University's Warren Alpert Medical School.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-rose">DBT Supervision</span>
+          <span class="tag tag-rose">DBT-E</span>
+          <span class="tag tag-rose">Child &amp; Adolescent</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dana Allswede -->
+    <div class="team-card">
+      <div class="team-card-top">
+        <div class="team-initial">DA</div>
+        <div class="team-name">Dana Allswede, PhD</div>
+        <div class="team-cred">Instructor, Harvard Medical School · Staff Psychologist, MGH</div>
+      </div>
+      <div class="team-card-body">
+        <div class="team-role">Lead, Parenting Young Children Group · DBT-E Clinician</div>
+        <p class="team-bio">
+          Dr. Allswede completed her doctoral training in clinical psychology at Yale University
+          and her fellowship at the Yale Child Study Center. She specializes in supporting young
+          children (ages 0–5) and treating trauma. She is the lead developer of the Parenting
+          Young Children groups for families of children ages 2–6 with emerging emotional and
+          behavioral regulation difficulties, and piloted a parallel group in Spanish. She also
+          leads a group for parents of children with ADHD, serves as a DBT-E clinician, and
+          provides brief consultations through integrating primary care settings for young
+          children and their postpartum families, and outpatient therapy to children,
+          adolescents, and families.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-plum">Early Childhood</span>
+          <span class="tag tag-plum">Parenting Groups</span>
+          <span class="tag tag-plum">Trauma</span>
+          <span class="tag tag-plum">ADHD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elizabeth Powers -->
+    <div class="team-card">
+      <div class="team-card-top rose">
+        <div class="team-initial">EP</div>
+        <div class="team-name">Elizabeth Powers, BS, BA</div>
+        <div class="team-cred">Program Coordinator</div>
+      </div>
+      <div class="team-card-body rose">
+        <div class="team-role">Program Coordinator · Pediatric Trauma-Informed Interventions</div>
+        <p class="team-bio">
+          Elizabeth Powers holds a BS in Psychology and a BA in Community Education and Social
+          Change (<em>summa cum laude</em>) from UMass Amherst, where her honors thesis
+          examined childhood identity-based discrimination through the ACEs framework — work
+          subsequently published in the <em>Journal of Child and Adolescent Trauma</em> (2026). She
+          supports and manages clinical and research efforts within the program focusing on
+          pediatric outpatient psychotherapy and trauma-informed interventions for children
+          (ages 2–12) and families. Prior to this role, she served as a Clinical Research
+          Coordinator in the MGH Behavioral Medicine Program, managing NIH- and CFAR-funded
+          international studies on HIV mental health interventions across South Africa, Zimbabwe,
+          and the United States. She brings expertise in community-engaged research, IRB
+          management, REDCap, qualitative analysis, and global health equity.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-rose">Pediatric Interventions</span>
+          <span class="tag tag-rose">ACEs</span>
+          <span class="tag tag-rose">Community-Engaged Research</span>
+          <span class="tag tag-rose">Broad Trauma Initiative</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kathy Trang -->
+    <div class="team-card">
+      <div class="team-card-top">
+        <div class="team-initial">KT</div>
+        <div class="team-name">Kathy Trang, PhD</div>
+        <div class="team-cred">Instructor, Harvard Medical School</div>
+      </div>
+      <div class="team-card-body">
+        <div class="team-role">Research Investigator · Global &amp; Intergenerational Trauma</div>
+        <p class="team-bio">
+          Dr. Trang completed doctoral training in biological anthropology at Emory University
+          and postdoctoral training at NYU and Harvard. She integrates qualitative and
+          quantitative methods to investigate dynamic interactions between culture and biology
+          across the life course, with a focus on psychosocial and biological mechanisms
+          linking adversity to health outcomes. She has led multidisciplinary studies in
+          Vietnam, Peru, and Bangladesh advancing knowledge on intergenerational trauma transmission.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-plum">Biological Anthropology</span>
+          <span class="tag tag-plum">Intergenerational Trauma</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kristina Conroy -->
+    <div class="team-card">
+      <div class="team-card-top sage">
+        <div class="team-initial">KC</div>
+        <div class="team-name">Kristina Conroy, PhD</div>
+        <div class="team-cred">T32 Postdoctoral Fellow, MGH Center for Addiction Medicine</div>
+      </div>
+      <div class="team-card-body sage">
+        <div class="team-role">Postdoctoral Fellow · Community-Based Youth Mental Health</div>
+        <p class="team-bio">
+          Dr. Conroy completed her doctorate at Florida International University and her
+          clinical fellowship (child/adolescent focus) at MGH/Harvard Medical School. Her
+          research focuses on collaborating with schools and community organizations to
+          strengthen mental health supports for youth from low-income and ethnically/racially
+          minoritized backgrounds, with specific interests in community-based participatory
+          research, workforce support for school staff, and culturally relevant supports for
+          youth anxiety and traumatic stress. She collaborates with the program on
+          community-engaged approaches to addressing youth and parents with trauma histories.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-sage">CBPR</span>
+          <span class="tag tag-sage">School Mental Health</span>
+          <span class="tag tag-sage">Health Equity</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Makiko Watanabe -->
+    <div class="team-card">
+      <div class="team-card-top sage">
+        <div class="team-initial">MW</div>
+        <div class="team-name">Makiko Watanabe, PhD</div>
+        <div class="team-cred">Instructor in Psychiatry, Harvard Medical School · Staff Psychologist, MGH</div>
+      </div>
+      <div class="team-card-body sage">
+        <div class="team-role">Founding Director, MGH Child &amp; Adolescent Dialectical Behavior Therapy (DBT) Program · Lead DBT-Elementary (DBT-E) · Integrated Primary Care (IPC) Clinician</div>
+        <p class="team-bio">
+          Dr. Watanabe is the founding director of the Child and Adolescent DBT Program at MGH.
+          She received her PhD from George Washington University and completed postdoctoral
+          training at Harbor-UCLA Medical Center providing full-model DBT for adolescents with
+          suicidal and self-harm behaviors. At MGH she leads family therapy for children with
+          emerging behavioral difficulties, provides IPC consultations, and co-developed the
+          DBT-E intervention. She also collaborates on clinical implementation grants evaluating
+          interventions in primary and secondary care settings.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-sage">DBT-E</span>
+          <span class="tag tag-sage">Adolescent DBT</span>
+          <span class="tag tag-sage">Family Therapy</span>
+          <span class="tag tag-sage">IPC</span>
+        </div>
+      </div>
+    </div>
+    <!-- Mary Wallace -->
+    <div class="team-card">
+      <div class="team-card-top rose">
+        <div class="team-initial">MW</div>
+        <div class="team-name">Mary Wallace, AB</div>
+        <div class="team-cred">Clinical Research Coordinator, MGH</div>
+      </div>
+      <div class="team-card-body rose">
+        <div class="team-role">Research Coordinator · Trauma &amp; Biological Outcomes</div>
+        <p class="team-bio">
+          Mary Wallace holds an AB in Psychology (Cognitive Neuroscience &amp; Evolutionary
+          Psychology track) from Harvard University. She examines links between
+          lifetime trauma and adversity exposure among youth and families and later mental
+          health concerns, and independently investigates biological correlates associated
+          with youth trauma-informed psychotherapy interventions — including as an author on
+          an upcoming systematic review of biological changes after child trauma mental health
+          interventions. Her prior research experience includes EEG and behavioral data
+          analysis at Boston Children's Hospital, cognitive aging research at the University
+          of Florida, and consulting work in healthcare analytics.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-rose">Trauma Research</span>
+          <span class="tag tag-rose">Biological Outcomes</span>
+          <span class="tag tag-rose">Systematic Review</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mia Owens -->
+    <div class="team-card">
+      <div class="team-card-top sage">
+        <div class="team-initial">MO</div>
+        <div class="team-name">Mia Owens, LCSW</div>
+        <div class="team-cred">Social Worker, MGH</div>
+      </div>
+      <div class="team-card-body sage">
+        <div class="team-role">Clinical Social Worker</div>
+        <p class="team-bio">
+          Mia Owens works within the Broad Trauma Initiative at MGH, providing care across
+          the Integrated Primary Care Clinic, the DBT-E program for elementary school–aged
+          children, and the Young Child Group. She brings a strong background in supporting
+          children and families impacted by complex trauma, drawn from prior work in in-home
+          services providing intensive support to youth and caregivers navigating significant
+          emotional, behavioral, and environmental stressors. She is committed to
+          trauma-informed, evidence-based care that empowers children and families to thrive.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-sage">Complex Trauma</span>
+          <span class="tag tag-sage">IPC</span>
+          <span class="tag tag-sage">DBT-E</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mollie Dion -->
+    <div class="team-card">
+      <div class="team-card-top">
+        <div class="team-initial">MD</div>
+        <div class="team-name">Mollie Dion, MSW</div>
+        <div class="team-cred">Social Worker, MGH</div>
+      </div>
+      <div class="team-card-body">
+        <div class="team-role">Clinical Social Worker</div>
+        <p class="team-bio">
+          Mollie Dion is a clinical social work trainee specializing in children, youth, and
+          families, with experience across residential mental health care, school-based
+          counseling, community care coordination, early childhood education, and pediatric
+          bereavement support. She holds an MSW from Boston College and an MA in Child Study
+          and Human Development from Tufts University (Eliot-Pearson Fellow). Her training
+          spans trauma-related interventions, crisis prevention, and evidence-based approaches
+          including CBT, DBT, ERP, family therapy, and solution-focused therapy.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-plum">Child &amp; Family</span>
+          <span class="tag tag-plum">Trauma</span>
+          <span class="tag tag-plum">Bereavement</span>
+          <span class="tag tag-plum">DBT / CBT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nancy Rotter -->
+    <div class="team-card">
+      <div class="team-card-top rose">
+        <div class="team-initial">NR</div>
+        <div class="team-name">Nancy Rotter, PhD</div>
+        <div class="team-cred">Assistant Professor, Harvard Medical School · Staff Psychologist, MGH</div>
+      </div>
+      <div class="team-card-body rose">
+        <div class="team-role">Founding Co-Director, IPC Program · Director, Food Allergy Center Psychology</div>
+        <p class="team-bio">
+          Dr. Rotter co-founded and co-directs the MGH Integrated Primary Care program,
+          improving access to mental health care by integrating psychologists and social workers
+          into primary care pediatrics and adolescent medicine clinics. She is director of
+          Psychological Services in the Food Allergy Center and previously co-founded the
+          Pediatric Behavioral Medicine program and served as Clinical Director of Child
+          Psychology. Clinical program development and mentoring have been central to her
+          career at MGH.
+        </p>
+        <div class="team-tags">
+          <span class="tag tag-rose">Integrated Primary Care</span>
+          <span class="tag tag-rose">Food Allergy</span>
+          <span class="tag tag-rose">Pediatric Behavioral Medicine</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Alumni -->
+  <div style="margin-top: 4rem;">
+    <p class="section-label">Program Alumni</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+
+      <!-- Emily Blevins -->
+      <div style="background: var(--white); border: 1px solid rgba(30,58,110,.1); padding: 1.3rem 1.5rem; border-radius: 2px;">
+        <div style="font-size: .88rem; font-weight: 500; color: var(--navy); margin-bottom: .2rem;">Emily Blevins, PhD</div>
+        <div style="font-size: .75rem; color: var(--muted); margin-bottom: .5rem;">Former Postdoctoral Fellow · Assistant Professor of Psychology, Loyola Marymount University</div>
+        <div style="font-size: .82rem; color: var(--slate); line-height: 1.6;">Dr. Blevins holds a PhD in Clinical-Community Psychology from the University of Illinois Urbana-Champaign and a BA in Psychology and International Studies (<em>summa cum laude</em>) from the University of Richmond. Her research integrates community psychology and clinical science to examine racial equity, trauma, and health disparities — with particular expertise in community-based participatory methods, physiological stress responses, and transdiagnostic interventions. During her time with the program, she contributed to research on childhood adversity and biobehavioral health outcomes, co-authored publications including work on integrating biological assessments into childhood adversity research (<em>Harvard Review of Psychiatry</em>, 2026) and on pandemic-related maternal stress and child behavioral outcomes in Peru (<em>Child Psychiatry &amp; Human Development</em>, 2025), and contributed to the tiered trauma-informed care pilot study (<em>BMC Health Services Research</em>, 2025). She is now Assistant Professor of Psychology in the Bellarmine College of Liberal Arts at Loyola Marymount University, Los Angeles.</div>
+      </div>
+
+      <!-- Miranda Eschtruth -->
+      <div style="background: var(--white); border: 1px solid rgba(30,58,110,.1); padding: 1.3rem 1.5rem; border-radius: 2px;">
+        <div style="font-size: .88rem; font-weight: 500; color: var(--navy); margin-bottom: .2rem;">Miranda Eschtruth, BS, BA</div>
+        <div style="font-size: .75rem; color: var(--muted); margin-bottom: .5rem;">Former Research Coordinator · Operations Coordinator, Broad Institute of MIT and Harvard</div>
+        <div style="font-size: .82rem; color: var(--slate); line-height: 1.6;">Miranda Eschtruth holds a BS in Clinical Psychology and a BA in Child Study &amp; Human Development (concentration in Child &amp; Family Health and Well-Being) from Tufts University, where she graduated <em>summa cum laude</em>. Before joining the program as a Clinical Research Coordinator, she gained research experience at Harvard's Lab for Youth Mental Health (meta-analysis of digital youth psychotherapy interventions) and at the TEAM Lab at Tufts (systematic reviews, fear conditioning, qualitative coding). She also completed clinical experience as a residential counselor at a trauma-informed residential care facility for adolescents. As a research coordinator with Dr. Basu's group, she contributed to the program's trauma-informed pediatric intervention research, including as a co-author on the tiered trauma-informed care pilot study (<em>BMC Health Services Research</em>, 2025). She continues her work in trauma research as Operations Coordinator at the Biology of Trauma Initiative, Broad Institute of MIT and Harvard.</div>
+      </div>
+
+      <!-- Katelyn Malvese -->
+      <div style="background: var(--white); border: 1px solid rgba(30,58,110,.1); padding: 1.3rem 1.5rem; border-radius: 2px;">
+        <div style="font-size: .88rem; font-weight: 500; color: var(--navy); margin-bottom: .2rem;">Katelyn Malvese, MA</div>
+        <div style="font-size: .75rem; color: var(--muted); margin-bottom: .5rem;">Former Research Coordinator · Senior Clinical Research Coordinator, MGH Division of Child and Adolescent Psychiatry</div>
+        <div style="font-size: .82rem; color: var(--slate); line-height: 1.6;">Katelyn Malvese holds an MA in Child Study &amp; Human Development (concentration in Clinical-Developmental Health and Psychology) and a BA in both Psychology and Child Study &amp; Human Development (<em>summa cum laude</em>) from Tufts University, where she received the Eliot-Pearson Alumni Award and the Class of 1942 Prize Scholarship. Her research background spans positive youth development (post-genocide Rwanda, El Salvador), pediatric GI psychology (Boston Children's Hospital), and childhood adversity. As a research coordinator with the program, she co-authored the tiered trauma-informed care pilot study (<em>BMC Health Services Research</em>, 2025) and independently examines links between trauma and chronic physical health conditions in youth. She continues this work as Senior Clinical Research Coordinator in the MGH Division of Child and Adolescent Psychiatry, within the <a href="https://www.broadtraumainitiative.org/" target="_blank" style="color: var(--navy); text-decoration: none;">Broad Trauma Initiative</a>. She is a doctoral candidate in clinical psychology at Penn State University.</div>
+      </div>
+
+      <!-- Caley Mikesell -->
+      <div style="background: var(--white); border: 1px solid rgba(30,58,110,.1); padding: 1.3rem 1.5rem; border-radius: 2px;">
+        <div style="font-size: .88rem; font-weight: 500; color: var(--navy); margin-bottom: .2rem;">Caley Mikesell, MA</div>
+        <div style="font-size: .75rem; color: var(--muted); margin-bottom: .5rem;">Former Research Coordinator · Doctoral Student, University of Washington, Seattle</div>
+        <div style="font-size: .82rem; color: var(--slate); line-height: 1.6;">Caley Mikesell holds an MA in Psychology from Brandeis University (<em>summa cum laude</em>) and a BA in Public Health from Elon University. While at MGH and the Broad Trauma Initiative, she co-managed studies of trauma-informed pediatric and family care interventions, co-developed the Parent Advisory Board protocol for evaluating DBT interventions, contributed to systematic literature reviews, and co-authored manuscripts including the program's foundational pilot study in <em>BMC Health Services Research</em> (2025). She also served as Senior Research Program Coordinator on the Population Mental Health Lab's neuropsychiatric genetics studies (NeuroMex, GEDMex) at Harvard Chan / Broad Institute. She is now a doctoral candidate in Clinical Psychology at the University of Washington, Seattle.</div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ══ CLINICAL PROGRAMS ══ -->
+<section id="programs">
+  <p class="section-label">Clinical Programs</p>
+  <h2 class="section-title">Integrated care from <em>screening to treatment</em></h2>
+  <div class="programs-stack">
+
+    <!-- IPC Program -->
+    <div class="program-block">
+      <div class="program-header">
+        <div>
+          <div class="program-name">The Integrated Primary Care (IPC) Program</div>
+          <div style="font-size:.82rem; color:rgba(255,255,255,.45); margin-top:.35rem;">
+            Founding Co-Directors: Archana Basu, PhD &amp; Nancy Rotter, PhD
+          </div>
+        </div>
+      </div>
+      <div class="program-body">
+        <p class="program-desc">
+          The IPC program embeds psychology and social work clinicians within MGH primary care 
+          pediatrics and adolescent medicine clinics. Working alongside pediatricians and 
+          adolescent medicine physicians, IPC clinicians address a full range of developmental, 
+          emotional, and behavioral concerns for children from infancy through age 21 — 
+          providing care at the point of contact where families already seek help.
+        </p>
+        <div class="program-features">
+          <div class="feature-item">
+            <div class="feature-title">Screening &amp; Comprehensive Evaluation</div>
+            <div class="feature-desc">Brief or detailed mental health assessments conducted during primary care appointments.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Psychoeducation &amp; Brief Interventions</div>
+            <div class="feature-desc">Evidence-based information, resources, and brief interventions for families navigating developmental and mental health concerns.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Curbside Consultations</div>
+            <div class="feature-desc">Real-time consultations to primary care physicians to inform their clinical recommendations.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Triage &amp; Resource Recommendations</div>
+            <div class="feature-desc">Tailored plans developed collaboratively with pediatricians — including referrals for therapy, pharmacological evaluation, neuropsychological assessment, and community services.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">IPC Outpatient Brief Interventions</div>
+            <div class="feature-desc">Short-term outpatient care for focal concerns such as sleep or feeding problems, adjustment to stressors.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Acute Care Triage</div>
+            <div class="feature-desc">Assistance triaging patients to higher levels of care including partial hospitalization and acute psychiatric services.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ DBT-E ══ -->
+<section id="dbt-e">
+  <p class="section-label">Intervention Spotlight</p>
+  <h2 class="section-title">DBT-Elementary <em>(DBT-E)</em></h2>
+
+  <div class="program-block" style="border-color:rgba(30,58,110,.18);">
+    <div class="program-header">
+      <div>
+        <div class="program-name">Dialectical Behavior Therapy — Elementary (DBT-E)</div>
+        <div style="font-size:.82rem; color:rgba(255,255,255,.45); margin-top:.35rem;">
+          Lead: Makiko Watanabe, PhD · Co-Developers: Makiko Watanabe, PhD · Christina Dolce, PsyD · Archana Basu, PhD (2023)
+        </div>
+      </div>
+      <span class="program-badge badge-plum">Under Pragmatic Trial</span>
+    </div>
+    <div class="program-body">
+      <p class="program-desc">
+        DBT-E is a 12-week, trauma-informed, family-based intervention for children ages 7–12 
+        with emerging emotion or behavioral dysregulation. Co-developed in 2023 from Dialectical 
+        Behavior Therapy (Linehan), DBT for Adolescents (Rathus &amp; Miller), and Parent 
+        Management Training (Kazdin), DBT-E integrates trauma-informed care principles 
+        (SAMHSA, 2023) throughout its staff training and intervention workflows.
+      </p>
+
+      <div class="dbt-highlights">
+        <div class="dbt-hi">
+          <div class="dbt-hi-stat">92.3%</div>
+          <div class="dbt-hi-label">of children completing DBT-E had a history of at least one adverse childhood experience (ACE)</div>
+        </div>
+        <div class="dbt-hi">
+          <div class="dbt-hi-stat">&gt;50%</div>
+          <div class="dbt-hi-label">of participating families had difficulty securing mental health services for their child in the past year</div>
+        </div>
+        <div class="dbt-hi">
+          <div class="dbt-hi-stat">12 wk</div>
+          <div class="dbt-hi-label">duration — substantially briefer than traditional 6–12 month DBT programs, expanding programmatic capacity</div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;">
+        <p style="font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--navy); margin-bottom:1rem;">What Makes DBT-E Distinctive</p>
+        <div class="program-features">
+          <div class="feature-item">
+            <div class="feature-title">Transdiagnostic approach</div>
+            <div class="feature-desc">Children with dysregulation symptoms — regardless of diagnosis — are well-suited to DBT-E, developed primarily for children referred by their pediatricians.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Parents as "emotion coaches"</div>
+            <div class="feature-desc">Parents play a central role. The primary goal is to bolster parents' efficacy, teaching developmentally tailored distress tolerance skills for use during dysregulation crises.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Trauma-informed throughout</div>
+            <div class="feature-desc">Trauma-informed care principles (SAMHSA, 2023) are integrated into staff training and all intervention workflows — recognizing the high prevalence of ACEs in this population.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Primary care partnership</div>
+            <div class="feature-desc">Close collaboration with pediatricians enables early identification of children with emerging dysregulation and reduces wait times to access this specialized treatment.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Balance of acceptance &amp; change</div>
+            <div class="feature-desc">DBT-E balances acceptance and change principles and prioritizes creating a validating, nonjudgmental caregiving environment to strengthen the parent-child relationship.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-title">Modular, skills-based design</div>
+            <div class="feature-desc">Individual parent guidance, family therapy sessions, and skills groups give families practice with developmentally adapted DBT and behavior management skills.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PARENTING YOUNG CHILDREN ══ -->
+<section id="pyc">
+  <p class="section-label">Intervention Spotlight</p>
+  <h2 class="section-title">Parenting <em>Young Children</em></h2>
+
+  <div class="program-block">
+    <div class="program-header rose-h">
+      <div>
+        <div class="program-name">Parenting Young Children Group Intervention</div>
+        <div style="font-size:.82rem; color:rgba(255,255,255,.45); margin-top:.35rem;">
+          Lead: Dana Allswede, PhD
+        </div>
+      </div>
+      <span class="program-badge badge-rose"></span>
+    </div>
+    <div class="program-body">
+      <p class="program-desc">
+        Parenting Young Children is a 12-week, trauma-informed, group-based intervention for 
+        parents and caregivers of children ages 2–6 with emerging emotional dysregulation. 
+        Led by Dana Allswede, PhD, the intervention incorporates components of 
+        Parent-Child Interaction Therapy and Strong Roots, integrating trauma-informed care 
+        principles throughout. A Spanish-language version has also been piloted.
+      </p>
+      <div class="program-features">
+        <div class="feature-item rose-f">
+          <div class="feature-title">Developmental Guidance</div>
+          <div class="feature-desc">Helping parents better understand their child's behavior and the developmental context of tantrums and emotional outbursts.</div>
+        </div>
+        <div class="feature-item rose-f">
+          <div class="feature-title">Behavior Navigation Strategies</div>
+          <div class="feature-desc">Concrete, evidence-based strategies for navigating challenging behaviors including tantrums and defiance.</div>
+        </div>
+        <div class="feature-item rose-f">
+          <div class="feature-title">Parenting Pattern Awareness</div>
+          <div class="feature-desc">Increased awareness of personal parenting patterns and how they interact with children's regulatory capacities.</div>
+        </div>
+        <div class="feature-item rose-f">
+          <div class="feature-title">Parent Coping Skills</div>
+          <div class="feature-desc">Skills to help parents stay calm in difficult moments and co-regulate their child's feelings and behavior.</div>
+        </div>
+        <div class="feature-item rose-f">
+          <div class="feature-title">Peer Support</div>
+          <div class="feature-desc">Connection with other parents navigating similar challenges — a validating, community-building component of the group format.</div>
+        </div>
+        <div class="feature-item rose-f">
+          <div class="feature-title">Publicly Available Resources</div>
+          <div class="feature-desc">A library of psychoeducational materials developed by the program is freely accessible to families and clinicians.</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <p style="font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); margin-bottom:1rem;">Psychoeducational Handouts</p>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:.75rem;">
+
+          <a href="FINAL%20YC%20Background%20Music%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--amber); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Background Music</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">How our own experiences shape how we parent</div>
+          </a>
+
+          <a href="FINAL%20YC%20Balanced%20Parenting%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--amber); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Balanced Parenting</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Being both strong &amp; in charge and warm &amp; kind</div>
+          </a>
+
+          <a href="FINAL%20YC%20Calm%20Down%20Strategies%20for%20Parents%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--amber); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Coping Strategies for Parents</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Deep breathing, grounding, and self-compassion tools</div>
+          </a>
+
+          <a href="FINAL%20YC%20Calm%20DownCoping%20Strategies%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--coral); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--coral); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Coping Strategies for Kids</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Child-friendly tools for managing big feelings</div>
+          </a>
+
+          <a href="FINAL%20YC%20Changing%20Challenging%20Behaviors.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--navy); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Changing Challenging Behaviors</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Teaching alternatives, ignoring, and positive reinforcement</div>
+          </a>
+
+          <a href="FINAL%20YC%20Handout%20Special%20Time%20.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--navy); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Special Time</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">5–10 minutes of child-led play to strengthen the relationship</div>
+          </a>
+
+          <a href="FINAL%20YC%20Managing%20Meltdown%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--coral); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--coral); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Managing Meltdowns</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Staying calm and co-regulating during emotional outbursts</div>
+          </a>
+
+          <a href="FINAL%20YC%20Mental%20Flexibility%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--navy); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--navy); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Building Mental Flexibility</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Modeling adaptability and practicing flexible thinking</div>
+          </a>
+
+          <a href="FINAL%20YC%20Navigating%20Change%20Handout%20.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--amber); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--amber); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Navigating Change</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Supporting children through big and unexpected changes</div>
+          </a>
+
+          <a href="FINAL%20YC%20Offering%20Choices%20Handout.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--coral); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--coral); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Offering Choices</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Balancing limits with age-appropriate autonomy</div>
+          </a>
+
+          <a href="FINAL%20YC%20Routines%20and%20Transitions%20.pdf" target="_blank" style="display:block; background:var(--card-bg); border:1px solid rgba(30,58,110,.12); border-left:3px solid var(--coral); padding:.85rem 1rem; text-decoration:none; border-radius:2px; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(26,26,46,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div style="font-size:.75rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--coral); margin-bottom:.3rem;">Handout</div>
+            <div style="font-size:.9rem; font-weight:500; color:var(--ink); line-height:1.35;">Routines and Transitions</div>
+            <div style="font-size:.75rem; color:var(--muted); margin-top:.3rem;">Why routines matter and how to ease difficult transitions</div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KEY PUBLICATIONS ══ -->
+<section id="publication">
+  <p class="section-label">Program Research</p>
+  <h2 class="section-title">Key <em>Publications</em></h2>
+  <p style="font-size:1rem; color:var(--slate); max-width:65ch; margin-bottom:2rem;">
+    The following publications reflect the program's research on trauma-informed pediatric 
+    population mental health care and the biological effects of childhood adversity.
+  </p>
+
+  <div class="pub-item">
+    <span class="pub-year">2025</span>
+    <div>
+      <div class="pub-title">Developmental Traumatology: Addressing the Biological Effects of Childhood Trauma Requires Long-Term Investments — And It's Worth It</div>
+      <div class="pub-journal">
+        <em>StressPoints</em> — Volume 39, Issue 2 · Blevins EJ, Mikesell C, &amp; Koenen KC &nbsp;·&nbsp;
+        <a href="https://istss.org/wp-content/uploads/2025/06/Developmental-Traumatology_Basu_FINAL.pdf?_zs=gak2W1&_zl=cAJHA" target="_blank" style="color:var(--navy); text-decoration:none;">Read article →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="pub-item">
+    <span class="pub-year">2025</span>
+    <div>
+      <div class="pub-title">Implementing a trauma-informed approach in a tiered model of pediatric population mental health care: a pilot study in primary and secondary care</div>
+      <div class="pub-journal">
+        BMC Health Services Research, 25(1):1603. doi:10.1186/s12913-025-13356-7 · PMID: 41413816 · 
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12715910/" target="_blank" style="color:var(--navy); text-decoration:none;">PMC12715910</a>
+      </div>
+      <div style="margin-top:.5rem; font-size:.8rem; color:var(--muted);">
+        Mikesell C, Blevins EJ, Eschtruth M, Malvese K, Wallace M, Zhou Y, Lee YH, Allswede D, Watanabe M, Rotter N, Basu A.
+      </div>
+    </div>
+  </div>
+
+  <div class="pub-item">
+    <span class="pub-year">2026</span>
+    <div>
+      <div class="pub-title">Perspectives on Integrating Biological Assessments to Address the Health Effects of Childhood Adversities</div>
+      <div class="pub-journal">
+        Harvard Review of Psychiatry, 34(1):44–56. doi:10.1097/HRP.0000000000000413 · PMID: 39636757 · Epub 2025 Dec 30
+      </div>
+      <div style="margin-top:.5rem; font-size:.8rem; color:var(--muted);">
+        Blevins EJ, Slopen N, Koenen KC, Mikesell C, Basu A.
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══ CTA ══ -->
+<div class="cta-bar">
+  <p>We welcome collaborations and inquiries from individuals and organizations whose work intersects with life course, trauma-informed, developmental, and population health approaches.</p>
+  <a href="mailto:pediatricpopulationhealth@mgb.org" class="cta-btn">Get in touch</a>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div>
+    <div class="foot-prog">Pediatric Population Health in Action</div>
+    <div class="foot-inst">
+      Division of Child &amp; Adolescent Psychiatry<br>
+      Massachusetts General Hospital / Harvard Medical School<br>
+      Yawkey 6A, 55 Fruit St, Boston, MA 02114<br>
+      617-724-4292<br>
+      pediatricpopulationhealth@mgb.org
+    </div>
+  </div>
+  <div class="foot-right">
+    Part of MassGeneral Brigham Academic Medical Centers.<br>
+    Program profile reflects current faculty, clinical programs, and active research as of June 2026.
+  </div>
+</footer>
+
+</body>
+</html>
